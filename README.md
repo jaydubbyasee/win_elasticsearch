@@ -1,4 +1,3 @@
 # win_elasticsearch
 
-TODO: Enter the cookbook description here.
-
+Note: This is not production-ready.
