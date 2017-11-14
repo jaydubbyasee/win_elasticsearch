@@ -5,16 +5,23 @@ seven_zip_archive 'elasticsearch' do
   overwrite true
 end
 
-template "C:/elasticsearch/elasticsearch-1.5.2/config/elasticsearch.yml" do
+template "C:/elasticsearch/elasticsearch-#{node['elasticsearch']['version']}/config/elasticsearch.yml" do
   source "elasticsearch.yml.erb"
   variables(
-    :config => node['elasticsearch']['configure']
+    :config => node['elasticsearch']['configure'],
+    :cluster_name => node['elasticsearch']['cluster']['name'],
+    :node_name => node['elasticsearch']['node']['name']
   )
 end
 
 # Install elasticsearch-cloud-aws plugin
 execute 'Installing elasticsearch-cloud-aws plugin' do
-  command "C:/elasticsearch/elasticsearch-1.5.2/bin/plugin.bat install elasticsearch/elasticsearch-cloud-aws/#{node['elasticsearch']['plugin']['elasticsearch-cloud-aws']['version']}"
+  command "C:/elasticsearch/elasticsearch-#{node['elasticsearch']['version']}/bin/plugin.bat install elasticsearch/elasticsearch-cloud-aws/#{node['elasticsearch']['plugin']['elasticsearch-cloud-aws']['version']}"
+end
+
+# Install marvel
+execute 'Installing marvel plugin' do
+  command "C:/elasticsearch/elasticsearch-#{node['elasticsearch']['version']}/bin/plugin.bat install elasticsearch/marvel/latest"
 end
 
 powershell_script 'delete_if_exist' do
@@ -28,11 +35,11 @@ powershell_script 'delete_if_exist' do
 end
 
 execute 'Installing Service elasticsearch-service-x64' do
-  command "C:/elasticsearch/elasticsearch-1.5.2/bin/service.bat install "
+  command "C:/elasticsearch/elasticsearch-#{node['elasticsearch']['version']}/bin/service.bat install "
   action :nothing
 end
 
 execute 'Start Service elasticsearch-service-x64' do
-  command "C:/elasticsearch/elasticsearch-1.5.2/bin/service.bat start "
+  command "C:/elasticsearch/elasticsearch-#{node['elasticsearch']['version']}/bin/service.bat start "
   action :nothing
 end
