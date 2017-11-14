@@ -37,6 +37,7 @@ end
 execute 'Installing Service elasticsearch-service-x64' do
   command "C:/elasticsearch/elasticsearch-#{node['elasticsearch']['version']}/bin/service.bat install "
   action :nothing
+  notifies :run, 'execute[Start Service elasticsearch-service-x64]', :immediately
 end
 
 execute 'Start Service elasticsearch-service-x64' do
