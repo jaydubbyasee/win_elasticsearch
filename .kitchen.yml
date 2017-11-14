@@ -13,14 +13,35 @@ verifier:
   name: inspec
 
 platforms:
-  - name: ubuntu-16.04
-  - name: centos-7
+  - name: windows-2012r2
 
 suites:
   - name: default
     run_list:
+      - recipe[java::default]
+      - recipe[seven_zip::default]
       - recipe[win_elasticsearch::default]
+      - recipe[win_elasticsearch::install]
     verifier:
       inspec_tests:
         - test/smoke/default
     attributes:
+      elasticsearch:
+        cluster:
+          name: foo
+        node:
+          name: bar
+        configure:
+          test: foobar
+        plugin:
+          elasticsearch-cloud-aws:
+            version: '2.5.1'
+      java:
+        jdk_version: '8'
+        install_flavor: windows
+        oracle:
+          accept_oracle_download_terms: true
+        windows:
+          url: http://download.oracle.com/otn-pub/java/jdk/8u152-b16/aa0333dd3019491ca4f6ddbe78cdb6d0/jdk-8u152-windows-x64.exe
+          package_name: jdk-8u152
+        java_home: 'C:\Program Files\Java\jdk1.8.0_152'

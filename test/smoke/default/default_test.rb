@@ -12,7 +12,7 @@ unless os.windows?
   end
 end
 
-# This is an example test, replace it with your own test.
-describe port(80), :skip do
-  it { should_not be_listening }
+describe service('elasticsearch-service-x64') do
+  it { should be_enabled }
+  it { should be_running }
 end

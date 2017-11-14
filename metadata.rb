@@ -18,3 +18,6 @@ chef_version '>= 12.1' if respond_to?(:chef_version)
 # a Supermarket.
 #
 # source_url 'https://github.com/<insert_org_here>/win_elasticsearch'
+
+depends 'java', '~> 1.50.0'
+depends 'seven_zip', '2.0.2'
